@@ -1,7 +1,17 @@
 /************* cd_ls_pwd.c file **************/
 int cd()
 {
-  printf("cd: under construction READ textbook!!!!\n");
+  // printf("cd: under construction READ textbook!!!!\n");
+  int ino = getino(pathname); //return error if ino == 0
+  MINODE* mip = iget(dev, ino); 
+  if (S_ISDIR(mip->INODE.i_mode)) {
+    iput(running->cwd); //release old cwd
+    running->cwd = mip; //change cwd to mip
+  } else {
+    printf("ERROR: not a directory\n");
+    return -1;
+  }
+
 
   // READ Chapter 11.7.3 HOW TO chdir
 }
