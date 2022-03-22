@@ -123,6 +123,15 @@ void iput(MINODE *mip)
 
   Write YOUR code here to write INODE back to disk
  *****************************************************/
+ block = (mip->ino - 1) / 8 + iblk;
+ offset = (mip->ino - 1) % 8;
+
+ //get block containing this inode 
+ get_block(mip->dev, block, buf); 
+ ip = (INODE*)buf + offset; //ip points at INODE
+ *ip = mip->INODE;          //copy INODE in block
+ put_block(mip->dev, block, buf); //write back to disk 
+//  midalloc(mip); //mip->refCount = 0
  //IN BOOK 
 } 
 
