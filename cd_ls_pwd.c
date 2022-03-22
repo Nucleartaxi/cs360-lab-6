@@ -18,7 +18,8 @@ int cd()
 
 int ls_file(MINODE *mip, char *name)
 {
-  printf("ls_file: to be done: READ textbook!!!!\n");
+  // printf("ls_file: to be done: READ textbook!!!!\n");
+  printf("%s  ", name);
   // READ Chapter 11.7.3 HOW TO ls
 }
 
@@ -35,10 +36,11 @@ int ls_dir(MINODE *mip)
   cp = buf;
   
   while (cp < buf + BLKSIZE){
+     //gets the name of each file
      strncpy(temp, dp->name, dp->name_len);
      temp[dp->name_len] = 0;
 	
-     printf("%s  ", temp);
+     ls_file(mip, temp);
 
      cp += dp->rec_len;
      dp = (DIR *)cp;
