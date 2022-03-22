@@ -106,6 +106,7 @@ int main(int argc, char *argv[ ])
   printf("creating P1 as a USER process\n");
   proc[1].pid = 1;
   proc[1].uid = 1;
+  proc[1].cwd = iget(dev, 2);
   
   while(1){
     printf("input command : [ls|cd|pwd|quit] ");
