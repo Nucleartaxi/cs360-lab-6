@@ -224,6 +224,6 @@ int findino(MINODE *mip, u32 *myino) // myino = i# of . return i# of ..    //thi
   int ino_of_dot = search(mip, ".");
   int parent_ino = search(mip, "..");
   *myino = parent_ino;
-  printf("ino_of_dot=%d myino (ino of parent)=%d\n", ino_of_dot, parent_ino);
+//   printf("ino_of_dot=%d myino (ino of parent)=%d\n", ino_of_dot, parent_ino);
   return ino_of_dot;
 }
