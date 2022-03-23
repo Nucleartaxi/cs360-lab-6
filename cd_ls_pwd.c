@@ -109,13 +109,19 @@ char* rpwd(MINODE *wd) {
   if (wd == root) {
     return;
   } 
+  int parent_ino;
+  int current_ino = findino(wd, &parent_ino);
+  printf("current_ino=%d parent_ino=%d\n", current_ino, parent_ino);
+  MINODE* pip = iget(dev, parent_ino);
+  return;
 }
 char* pwd(MINODE *wd)
 {
   // printf("pwd: READ HOW TO pwd in textbook!!!!\n");
   if (wd == root){
     printf("/\n");
-    return;
+  } else {
+    rpwd(wd);
   }
 }
 
