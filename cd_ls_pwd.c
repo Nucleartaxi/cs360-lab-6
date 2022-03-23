@@ -24,13 +24,13 @@ int ls_file(MINODE *mip, char *name)
   // printf("%s  ", name);
   int r, i;
   char ftime[64];
-  if (S_ISREG(mip->INODE.i_mode)) { // if (S_ISREG())
+  if ((mip->INODE.i_mode & 0xF000) == 0x8000) { // if (S_ISREG())
       printf("%c",'-');
   }
-  if (S_ISDIR(mip->INODE.i_mode)){ // if (S_ISDIR())
+  if ((mip->INODE.i_mode & 0xF000) == 0x4000){ // if (S_ISDIR())
       printf("%c",'d');
   }
-  if (S_ISLNK(mip->INODE.i_mode)){ // if (S_ISLNK())
+  if ((mip->INODE.i_mode & 0xF000) == 0xA000){ // if (S_ISLNK())
       printf("%c",'l');
   }
   for (i=8; i >= 0; i--){
@@ -43,19 +43,20 @@ int ls_file(MINODE *mip, char *name)
   printf("%4d ",mip->INODE.i_links_count); // link count
   printf("%4d ",mip->INODE.i_gid); // gid
   printf("%4d ",mip->INODE.i_uid); // uid
-  // print time
-  printf("%s ", ctime(&mip->INODE.i_atime)); // print time in calendar form
   printf("%8d ",mip->INODE.i_size); // file size
-  // ftime[strlen(ftime)-1] = 0; // kill \n at end
-  // printf("%s ",ftime);
+  // print time
+  // printf("%s ", ctime(&mip->INODE.i_mtime));
+  sprintf(ftime, "%s ", ctime(&mip->INODE.i_mtime)); // print time in calendar form
+  ftime[strlen(ftime)-1] = 0; // kill \n at end
+  printf("%s ",ftime);
   // print name
   printf("%s", name); // print file basename
   // // print -> linkname if symbolic file
-  // if ((mip->INODE.i_mode & 0xF000)== 0xA000){
-  //     char linkname[FILENAME_MAX];
-  //     readlink(sp, linkname, FILENAME_MAX);
-  //     printf(" -> %s", linkname); // print linked name
-  // }
+  if ((mip->INODE.i_mode & 0xF000)== 0xA000){
+      char linkname[FILENAME_MAX];
+      readlink(sp, linkname, FILENAME_MAX);
+      printf(" -> %s", linkname); // print linked name
+  }
   printf("\n");
   // READ Chapter 11.7.3 HOW TO ls
 }
@@ -74,6 +75,7 @@ int ls_dir(MINODE *mip)
   
   while (cp < buf + BLKSIZE){
      //gets the name of each file
+     mip = iget(dev, dp->inode);
      strncpy(temp, dp->name, dp->name_len);
      temp[dp->name_len] = 0;
 	
@@ -103,9 +105,14 @@ int ls()
   return 0;
 }
 
-char *pwd(MINODE *wd)
+char* rpwd(MINODE *wd) {
+  if (wd == root) {
+    return;
+  } 
+}
+char* pwd(MINODE *wd)
 {
-  printf("pwd: READ HOW TO pwd in textbook!!!!\n");
+  // printf("pwd: READ HOW TO pwd in textbook!!!!\n");
   if (wd == root){
     printf("/\n");
     return;
