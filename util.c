@@ -215,7 +215,7 @@ int findmyname(MINODE *parent, u32 myino, char myname[ ])
   // copy its name STRING to myname[ ]
 }
 
-int findino(MINODE *mip, u32 *myino) // myino = i# of . return i# of ..
+int findino(MINODE *mip, u32 *myino) // myino = i# of . return i# of ..    //this is the get_myino(MINODE *mip, int * parent_ino) function from the textbook
 {
   // mip points at a DIR minode
   // WRITE your code here: myino = ino of .  return ino of ..
