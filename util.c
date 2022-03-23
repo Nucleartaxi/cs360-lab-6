@@ -217,7 +217,13 @@ int findmyname(MINODE *parent, u32 myino, char myname[ ])
 
 int findino(MINODE *mip, u32 *myino) // myino = i# of . return i# of ..    //this is the get_myino(MINODE *mip, int * parent_ino) function from the textbook
 {
+  printf("findino\n");
   // mip points at a DIR minode
   // WRITE your code here: myino = ino of .  return ino of ..
   // all in i_block[0] of this DIR INODE.
+  int ino_of_dot = search(mip, ".");
+  int parent_ino = search(mip, "..");
+  *myino = parent_ino;
+  printf("ino_of_dot=%d myino (ino of parent)=%d\n", ino_of_dot, parent_ino);
+  return ino_of_dot;
 }
