@@ -103,10 +103,11 @@ int main(int argc, char *argv[ ])
   printf("root refCount = %d\n", root->refCount);
 
   // WRTIE code here to create P1 as a USER process
-  printf("creating P1 as a USER process\n");
-  proc[1].pid = 1;
-  proc[1].uid = 1;
-  proc[1].cwd = iget(dev, 2);
+  //I commented this out because I don't think we need this yet 
+  // printf("creating P1 as a USER process\n");
+  // proc[1].pid = 1;
+  // proc[1].uid = 1;
+  // proc[1].cwd = iget(dev, 2);
   
   while(1){
     printf("input command : [ls|cd|pwd|quit] ");
