@@ -50,8 +50,20 @@ int ls_dir(MINODE *mip)
 
 int ls()
 {
-  printf("ls: list CWD only! YOU FINISH IT for ls pathname\n");
-  ls_dir(running->cwd);
+  if (!strcmp(pathname, "")) { //if no path is specified, use cwd by default
+    printf("No path specified, using cwd\n");
+    ls_dir(running->cwd);
+  } else {
+    int pathname_ino = getino(pathname);
+    MINODE* mip = iget(dev, pathname_ino); //opening iget
+    if (!S_ISDIR(mip->INODE.i_mode)) { //checks to make sure the path is a directory, not a file
+      printf("Error, pathname: %s is not a directory\n", pathname);
+      return -1;
+    }
+    ls_dir(mip);
+    iput(mip); //closing iput
+  }
+  return 0;
 }
 
 char *pwd(MINODE *wd)
