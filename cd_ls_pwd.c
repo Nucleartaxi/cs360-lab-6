@@ -19,7 +19,44 @@ int cd()
 int ls_file(MINODE *mip, char *name)
 {
   // printf("ls_file: to be done: READ textbook!!!!\n");
-  printf("%s  ", name);
+  char *t1 = "xwrxwrxwr-------";
+  char *t2 = "----------------";
+  // printf("%s  ", name);
+  int r, i;
+  char ftime[64];
+  if (S_ISREG(mip->INODE.i_mode)) { // if (S_ISREG())
+      printf("%c",'-');
+  }
+  if (S_ISDIR(mip->INODE.i_mode)){ // if (S_ISDIR())
+      printf("%c",'d');
+  }
+  if (S_ISLNK(mip->INODE.i_mode)){ // if (S_ISLNK())
+      printf("%c",'l');
+  }
+  for (i=8; i >= 0; i--){
+      if (mip->INODE.i_mode & (1 << i)){ // print r|w|x
+          printf("%c", t1[i]);
+      } else{
+          printf("%c", t2[i]); // or print -
+      }
+  }
+  printf("%4d ",mip->INODE.i_links_count); // link count
+  printf("%4d ",mip->INODE.i_gid); // gid
+  printf("%4d ",mip->INODE.i_uid); // uid
+  // print time
+  printf("%s ", ctime(&mip->INODE.i_atime)); // print time in calendar form
+  printf("%8d ",mip->INODE.i_size); // file size
+  // ftime[strlen(ftime)-1] = 0; // kill \n at end
+  // printf("%s ",ftime);
+  // print name
+  printf("%s", name); // print file basename
+  // // print -> linkname if symbolic file
+  // if ((mip->INODE.i_mode & 0xF000)== 0xA000){
+  //     char linkname[FILENAME_MAX];
+  //     readlink(sp, linkname, FILENAME_MAX);
+  //     printf(" -> %s", linkname); // print linked name
+  // }
+  printf("\n");
   // READ Chapter 11.7.3 HOW TO ls
 }
 
