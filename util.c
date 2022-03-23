@@ -212,7 +212,36 @@ int findmyname(MINODE *parent, u32 myino, char myname[ ])
 {
   // WRITE YOUR code here
   // search parent's data block for myino; SAME as search() but by myino
-  // copy its name STRING to myname[ ]
+  // copy its name STRING to myname[ ]   
+   int i; 
+   char *cp, c, sbuf[BLKSIZE], temp[256];
+   DIR *dp;
+   INODE *ip;
+
+   printf("search for ino %d in MINODE = [%d, %d]\n", myino,parent->dev,parent->ino);
+   ip = &(parent->INODE);
+
+   /*** search for name in mip's data blocks: ASSUME i_block[0] ONLY ***/
+
+   get_block(dev, ip->i_block[0], sbuf);
+   dp = (DIR *)sbuf;
+   cp = sbuf;
+   printf("  ino   rlen  nlen  name\n");
+
+   while (cp < sbuf + BLKSIZE){
+     printf("%4d  %4d  %4d    %s\n", 
+           dp->inode, dp->rec_len, dp->name_len, dp->name);
+     if (dp->inode == myino){ //we found the node
+        strncpy(myname, dp->name, dp->name_len);
+        myname[dp->name_len] = 0;
+        printf("found %s : ino = %d\n", myname, dp->inode);
+        return dp->inode;
+     }
+     cp += dp->rec_len;
+     dp = (DIR *)cp;
+   }
+   return 0;
+
 }
 
 int findino(MINODE *mip, u32 *myino) // myino = i# of . return i# of ..    //this is the get_myino(MINODE *mip, int * parent_ino) function from the textbook
