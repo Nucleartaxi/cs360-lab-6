@@ -2,6 +2,11 @@
 int cd()
 {
   // printf("cd: under construction READ textbook!!!!\n");
+  if (!strcmp(pathname, "")) {
+    printf("cd no pathname given, returning to root\n");
+    running->cwd = root;
+    return;
+  }
   int ino = getino(pathname); //return error if ino == 0
   MINODE* mip = iget(dev, ino); 
   if (S_ISDIR(mip->INODE.i_mode)) {
