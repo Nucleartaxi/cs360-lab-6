@@ -25,7 +25,7 @@ int ls_file(MINODE *mip, char *name)
 
 int ls_dir(MINODE *mip)
 {
-  printf("ls_dir: list CWD's file names; YOU FINISH IT as ls -l\n");
+  printf("ls_dir\n");
 
   char buf[BLKSIZE], temp[256];
   DIR *dp;
