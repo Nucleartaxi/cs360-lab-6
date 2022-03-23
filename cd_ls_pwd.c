@@ -46,7 +46,7 @@ int ls_file(MINODE *mip, char *name)
   printf("%8d ",mip->INODE.i_size); // file size
   // print time
   // printf("%s ", ctime(&mip->INODE.i_mtime));
-  sprintf(ftime, "%s ", ctime(&mip->INODE.i_mtime)); // print time in calendar form
+  strcpy(ftime, ctime(&mip->INODE.i_mtime)); // print time in calendar form
   ftime[strlen(ftime)-1] = 0; // kill \n at end
   printf("%s ",ftime);
   // print name
@@ -54,7 +54,7 @@ int ls_file(MINODE *mip, char *name)
   // // print -> linkname if symbolic file
   if ((mip->INODE.i_mode & 0xF000)== 0xA000){
       char linkname[FILENAME_MAX];
-      readlink(sp, linkname, FILENAME_MAX);
+      readlink(mip, linkname, FILENAME_MAX);
       printf(" -> %s", linkname); // print linked name
   }
   printf("\n");
